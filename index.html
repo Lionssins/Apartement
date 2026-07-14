@@ -69,7 +69,7 @@
             <div id="calendar" class="grid grid-cols-7 gap-1 md:gap-2 text-sm bg-slate-100/50 border border-slate-200/80 rounded-xl p-1 md:p-2"></div>
             
             <div class="mt-6 flex flex-wrap gap-4 md:gap-8 text-xs md:text-sm justify-center font-bold bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 text-slate-600">
-                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-studio rounded-md shadow-sm"></div> Studio Minimalis</span>
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-studio rounded-md shadow-sm"></div> Sudirman Park </span>
                 <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-deluxe rounded-md shadow-sm"></div> 2-Bedroom Deluxe</span>
                 <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-penthouse rounded-md shadow-sm"></div> Penthouse Executive</span>
             </div>
@@ -86,9 +86,8 @@
                     <div class="flex-1">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. Pilih Apartement</label>
                         <select id="checkRoom" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white shadow-sm" onchange="renderAvailabilityClock()">
-                            <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Org)</option>
-                            <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Org)</option>
-                            <option value="Penthouse Executive">Penthouse Executive (Kapasitas 6 Org)</option>
+                            <option value="Sudirman Park">Sudirman Park (3 Kamar )</option>
+                            <option value="2-Bedroom Deluxe">Belum Tersedia</option>
                         </select>
                     </div>
                 </div>
@@ -113,39 +112,13 @@
                             <span class="absolute top-3 right-3 bg-blue-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">STUDIO</span>
                         </div>
                         <div class="p-5">
-                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">Studio Minimalis</h4>
+                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">Sudirman Park Tower B Lantai 39 Unit CH</h4>
                             <ul class="text-xs text-slate-600 space-y-2 font-medium">
-                                <li class="flex items-center gap-2.5"><i class="fas fa-user-friends text-blue-500 w-4 text-center"></i> Kapasitas: Max 2 Orang</li>
-                                <li class="flex items-center gap-2.5"><i class="fas fa-wifi text-blue-500 w-4 text-center"></i> Wi-Fi 100 Mbps & Smart TV 43"</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-user-friends text-blue-500 w-4 text-center"></i> Kapasitas: Max 10 Orang</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-wifi text-blue-500 w-4 text-center"></i> Wi-Fi & Smart TV 43"</li>
                                 <li class="flex items-center gap-2.5"><i class="fas fa-coffee text-blue-500 w-4 text-center"></i> Kitchenette & Coffee Maker</li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
-                        <div class="overflow-hidden h-48 relative">
-                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80" alt="2-Bedroom Deluxe" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 right-3 bg-purple-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">DELUXE</span>
-                        </div>
-                        <div class="p-5">
-                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">2-Bedroom Deluxe</h4>
-                            <ul class="text-xs text-slate-600 space-y-2 font-medium">
-                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-purple-500 w-4 text-center"></i> Kapasitas: Max 4 Orang</li>
-                                <li class="flex items-center gap-2.5"><i class="fas fa-bed text-purple-500 w-4 text-center"></i> 1 King Bed & 1 Queen Bed</li>
-                                <li class="flex items-center gap-2.5"><i class="fas fa-couch text-purple-500 w-4 text-center"></i> Ruang Tamu Luas & Balkon Privasi</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
-                        <div class="overflow-hidden h-48 relative">
-                            <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80" alt="Penthouse Executive" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 right-3 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">EXECUTIVE</span>
-                        </div>
-                        <div class="p-5">
-                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">Penthouse Executive</h4>
-                            <ul class="text-xs text-slate-600 space-y-2 font-medium">
-                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-amber-500 w-4 text-center"></i> Kapasitas: Max 6 Orang</li>
-                                <li class="flex items-center gap-2.5"><i class="fas fa-swimmer text-amber-500 w-4 text-center"></i> Private Jacuzzi & City View 360°</li>
-                                <li class="flex items-center gap-2.5"><i class="fas fa-concierge-bell text-amber-500 w-4 text-center"></i> Akses VIP & Layanan Butler</li>
                             </ul>
                         </div>
                     </div>
@@ -212,9 +185,7 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
                             <select id="bRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50/50 focus:bg-white outline-none focus:border-amber-500 transition">
-                                <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Orang)</option>
-                                <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Orang)</option>
-                                <option value="Penthouse Executive">Penthouse Executive (Kapasitas 6 Orang)</option>
+                                <option value="Studio Minimalis">Sudirman Park Tower B Lantai 39 Unit CH ( 3 Kamar )</option>
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -312,9 +283,7 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
                     <select id="eRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50">
-                        <option value="Studio Minimalis">Studio Minimalis</option>
-                        <option value="2-Bedroom Deluxe">2-Bedroom Deluxe</option>
-                        <option value="Penthouse Executive">Penthouse Executive</option>
+                        <option value="Studio Minimalis">Sudirman Park Tower B Lantai 39 Unit CH</option>
                     </select>
                 </div>
                 <div>
