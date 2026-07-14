@@ -12,11 +12,10 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
+        /* 3 Tipe Apartemen Utama */
         .bg-studio { background-color: #3b82f6; color: white; border: 1px solid #2563eb; }
         .bg-deluxe { background-color: #8b5cf6; color: white; border: 1px solid #7c3aed; }
         .bg-penthouse { background-color: #f59e0b; color: white; border: 1px solid #d97706; }
-        .bg-loft { background-color: #10b981; color: white; border: 1px solid #059669; }
-        .bg-skyview { background-color: #f43f5e; color: white; border: 1px solid #e11d48; }
 
         .day-badges-container::-webkit-scrollbar { display: none; }
         .day-badges-container { scrollbar-width: none; }
@@ -33,7 +32,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg md:text-xl font-extrabold tracking-wide text-white">PEMINJAMAN APARTEMENT</h1>
-                    <p class="text-[10px] text-slate-400 font-medium tracking-wider uppercase hidden md:block">Portal Reservasi Properti Eksekutif</p>
+                    <p class="text-[10px] text-slate-400 font-medium tracking-wider uppercase hidden md:block">Portal Reservasi Properti Eksekutif GA</p>
                 </div>
             </div>
             <button onclick="showAdminLogin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition shadow flex items-center gap-2 text-amber-400">
@@ -69,12 +68,10 @@
             
             <div id="calendar" class="grid grid-cols-7 gap-1 md:gap-2 text-sm bg-slate-100/50 border border-slate-200/80 rounded-xl p-1 md:p-2"></div>
             
-            <div class="mt-6 flex flex-wrap gap-3 md:gap-6 text-xs md:text-sm justify-center font-bold bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 text-slate-600">
+            <div class="mt-6 flex flex-wrap gap-4 md:gap-8 text-xs md:text-sm justify-center font-bold bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 text-slate-600">
                 <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-studio rounded-md shadow-sm"></div> Studio Minimalis</span>
                 <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-deluxe rounded-md shadow-sm"></div> 2-Bedroom Deluxe</span>
                 <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-penthouse rounded-md shadow-sm"></div> Penthouse Executive</span>
-                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-loft rounded-md shadow-sm"></div> Loft Industrial</span>
-                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-skyview rounded-md shadow-sm"></div> Sky View Suite</span>
             </div>
 
             <div class="mt-8 p-6 border border-slate-200/80 rounded-2xl bg-gradient-to-br from-white to-slate-50/50 shadow-sm">
@@ -91,9 +88,7 @@
                         <select id="checkRoom" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white shadow-sm" onchange="renderAvailabilityClock()">
                             <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Org)</option>
                             <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Org)</option>
-                            <option value="Penthouse Executive">Penthouse Executive (Kapasitas 8 Org)</option>
-                            <option value="Loft Industrial">Loft Industrial (Kapasitas 4 Org)</option>
-                            <option value="Sky View Suite">Sky View Suite (Kapasitas 6 Org)</option>
+                            <option value="Penthouse Executive">Penthouse Executive (Kapasitas 6 Org)</option>
                         </select>
                     </div>
                 </div>
@@ -111,7 +106,7 @@
                 <h3 class="font-extrabold text-slate-800 mb-6 flex items-center gap-2.5 text-base md:text-lg">
                     <i class="fas fa-info-circle text-amber-500 text-xl"></i> SPESIFIKASI & FASILITAS APARTEMENT
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
                         <div class="overflow-hidden h-48 relative">
                             <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" alt="Studio Minimalis" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -148,7 +143,7 @@
                         <div class="p-5">
                             <h4 class="font-extrabold text-slate-800 text-lg mb-2">Penthouse Executive</h4>
                             <ul class="text-xs text-slate-600 space-y-2 font-medium">
-                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-amber-500 w-4 text-center"></i> Kapasitas: Max 8 Orang</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-amber-500 w-4 text-center"></i> Kapasitas: Max 6 Orang</li>
                                 <li class="flex items-center gap-2.5"><i class="fas fa-swimmer text-amber-500 w-4 text-center"></i> Private Jacuzzi & City View 360°</li>
                                 <li class="flex items-center gap-2.5"><i class="fas fa-concierge-bell text-amber-500 w-4 text-center"></i> Akses VIP & Layanan Butler</li>
                             </ul>
@@ -176,8 +171,9 @@
                     <div id="viewDayContent" class="space-y-3"></div>
                 </div>
                 <div class="flex-1 p-5 md:p-6 bg-white">
-                    <h4 class="font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-                        <i class="fas fa-plus-circle text-amber-500"></i> Form Peminjaman Apartement
+                    <h4 class="font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between text-sm uppercase tracking-wider">
+                        <span class="flex items-center gap-2"><i class="fas fa-plus-circle text-amber-500"></i> Form Peminjaman</span>
+                        <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-extrabold lowercase tracking-normal"><i class="fas fa-magic"></i> auto-fill aktif</span>
                     </h4>
                     <form id="PeminjamanForm" onsubmit="savePeminjaman(event)" class="space-y-4">
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 flex items-center gap-3">
@@ -187,44 +183,48 @@
                                 <input type="date" id="bDate" required readonly class="w-full bg-transparent font-black text-slate-700 text-sm outline-none cursor-not-allowed">
                             </div>
                         </div>
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-600 mb-1">Divisi / Departemen</label>
-                                <input type="text" id="bDivisi" required placeholder="Contoh: Marketing, GA, IT" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                                <label class="block text-xs font-bold text-slate-600 mb-1 flex justify-between">
+                                    <span>Nama Pemesan</span>
+                                    <span class="text-[10px] text-blue-600 font-semibold">Ketik/Pilih</span>
+                                </label>
+                                <input type="text" id="bName" list="karyawanDataList" required placeholder="Ketik nama Anda..." oninput="autoFillKaryawan()" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50 focus:bg-white transition">
+                                <datalist id="karyawanDataList"></datalist>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap Pemesan</label>
-                                <input type="text" id="bName" required placeholder="Ketik nama Anda..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Divisi / Departemen</label>
+                                <input type="text" id="bDivisi" required readonly placeholder="Terisi otomatis..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">No. WhatsApp Aktif</label>
-                                <input type="tel" id="bPhone" required placeholder="08xxxxxxxxxx" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                                <input type="tel" id="bPhone" required readonly placeholder="Terisi otomatis..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">Email Pemesan</label>
-                                <input type="email" id="bEmail" required placeholder="email@perusahaan.com" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                                <input type="email" id="bEmail" required readonly placeholder="Terisi otomatis..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
                             </div>
                         </div>
+                        
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
-                            <select id="bRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50/50">
+                            <select id="bRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50/50 focus:bg-white outline-none focus:border-amber-500 transition">
                                 <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Orang)</option>
                                 <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Orang)</option>
-                                <option value="Penthouse Executive">Penthouse Executive (Kapasitas 8 Orang)</option>
-                                <option value="Loft Industrial">Loft Industrial (Kapasitas 4 Orang)</option>
-                                <option value="Sky View Suite">Sky View Suite (Kapasitas 6 Orang)</option>
+                                <option value="Penthouse Executive">Penthouse Executive (Kapasitas 6 Orang)</option>
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-In</label>
-                                <input type="time" id="bStart" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50">
+                                <input type="time" id="bStart" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50 focus:bg-white transition outline-none focus:border-amber-500">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-Out</label>
-                                <input type="time" id="bEnd" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50">
+                                <input type="time" id="bEnd" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50 focus:bg-white transition outline-none focus:border-amber-500">
                             </div>
                         </div>
                         <button type="submit" id="btnSubmit" class="w-full mt-6 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition tracking-wider text-sm uppercase">
@@ -245,11 +245,11 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Username</label>
-                    <input type="text" id="admUser" placeholder="Masukkan username" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                    <input type="text" id="admUser" placeholder="admin" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50 outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Password</label>
-                    <input type="password" id="admPass" placeholder="Masukkan password" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                    <input type="password" id="admPass" placeholder="••••••••" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50 outline-none focus:border-amber-500">
                 </div>
                 <button onclick="processAdminLogin()" id="btnAdminLogin" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3 rounded-xl shadow-md text-sm uppercase tracking-wider transition">Masuk Portal Admin</button>
             </div>
@@ -315,8 +315,6 @@
                         <option value="Studio Minimalis">Studio Minimalis</option>
                         <option value="2-Bedroom Deluxe">2-Bedroom Deluxe</option>
                         <option value="Penthouse Executive">Penthouse Executive</option>
-                        <option value="Loft Industrial">Loft Industrial</option>
-                        <option value="Sky View Suite">Sky View Suite</option>
                     </select>
                 </div>
                 <div>
@@ -345,9 +343,11 @@
         // =====================================================================
         // TEMPELKAN URL DEPLOYMENT WEB APP GOOGLE APPS SCRIPT ANDA DI SINI:
         // =====================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyom81_kzRijquUA5gaH_fecy916wGXnKFYjJJiM7Aqah91-pnlitUm-L2WzRaUTP75/exec'; 
+        const SCRIPT_URL = 'PASTE_URL_WEB_APP_ANDA_DI_SINI'; 
 
         let Peminjamans = [];
+        let MasterKaryawan = []; // Penyimpan cache data karyawan dari server
+
         const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         const today = new Date();
         let currentMonth = today.getMonth();
@@ -357,7 +357,7 @@
             initControls();
             const todayStr = new Date().toISOString().split('T')[0];
             if(document.getElementById('checkDate')) document.getElementById('checkDate').value = todayStr;
-            document.getElementById('calendar').innerHTML = "<div class='col-span-7 text-center py-20 text-amber-500 font-extrabold'><i class='fas fa-spinner fa-spin text-3xl mb-3'></i><br>Menghubungkan ke Database Apartement...</div>";
+            document.getElementById('calendar').innerHTML = "<div class='col-span-7 text-center py-20 text-amber-500 font-extrabold'><i class='fas fa-spinner fa-spin text-3xl mb-3'></i><br>Menghubungkan ke Database Apartement & Karyawan...</div>";
             loadPeminjamans();
         });
 
@@ -382,7 +382,18 @@
             try {
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json(); 
-                Peminjamans = (Array.isArray(data) ? data : data.bookings || []).map(b => {
+                
+                // Pisahkan data bookings dan data master karyawan
+                const rawBookings = data.bookings || (Array.isArray(data) ? data : []);
+                MasterKaryawan = data.karyawan || [];
+
+                // Populate Datalist Karyawan untuk Auto-Complete
+                const datalist = document.getElementById('karyawanDataList');
+                if(datalist && MasterKaryawan.length > 0) {
+                    datalist.innerHTML = MasterKaryawan.map(k => `<option value="${k.nama}">${k.divisi} - ${k.email}</option>`).join('');
+                }
+
+                Peminjamans = rawBookings.map(b => {
                     let fDate = b.date;
                     if (typeof fDate === 'string' && fDate.includes('T')) fDate = fDate.split('T')[0];
                     return { ...b, date: fDate, phone: b.phone || '', email: b.email || '-' };
@@ -394,12 +405,33 @@
             }
         }
 
+        // FUNGSI AUTO-FILL: MENGISI DIVISI, WA, & EMAIL SAAT NAMA DIKETIK/DIPILIH
+        function autoFillKaryawan() {
+            const inputName = document.getElementById('bName').value.trim().toLowerCase();
+            const found = MasterKaryawan.find(k => k.nama.toLowerCase() === inputName);
+            
+            const divInput = document.getElementById('bDivisi');
+            const phoneInput = document.getElementById('bPhone');
+            const emailInput = document.getElementById('bEmail');
+
+            if (found) {
+                divInput.value = found.divisi;
+                phoneInput.value = found.phone;
+                emailInput.value = found.email;
+            } else {
+                // Kosongkan kembali jika nama tidak cocok/dihapus
+                if(inputName === '') {
+                    divInput.value = '';
+                    phoneInput.value = '';
+                    emailInput.value = '';
+                }
+            }
+        }
+
         function getRoomClass(roomName) {
             if (roomName.includes('Studio')) return 'bg-studio';
             if (roomName.includes('2-Bedroom') || roomName.includes('Deluxe')) return 'bg-deluxe';
             if (roomName.includes('Penthouse')) return 'bg-penthouse';
-            if (roomName.includes('Loft')) return 'bg-loft';
-            if (roomName.includes('Sky View')) return 'bg-skyview';
             return 'bg-slate-700 text-white'; 
         }
 
@@ -495,6 +527,11 @@
             const start = document.getElementById('bStart').value;
             const end = document.getElementById('bEnd').value;
 
+            if (!divisiInput || !email) {
+                alert("Silakan pilih nama dari daftar karyawan agar Divisi dan Email terisi otomatis!");
+                return;
+            }
+
             if (start >= end) { alert("Jam check-out harus lebih akhir dari jam check-in!"); return; }
             const name = `${namaInput} (${divisiInput})`;
 
@@ -523,20 +560,15 @@
             btn.innerHTML = originalHtml; btn.disabled = false;
         }
 
-        // ==========================================================
-        // PERUBAHAN UTAMA: PROSES LOGIN ADMIN AMAN (SERVER SIDE)
-        // ==========================================================
         async function processAdminLogin() {
             const btn = document.getElementById('btnAdminLogin');
             const user = document.getElementById('admUser').value.trim();
             const pass = document.getElementById('admPass').value.trim();
 
             if(!user || !pass) { alert("Isi username & password!"); return; }
-            
             btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memverifikasi..."; btn.disabled = true;
 
             try {
-                // Mengirim data mentah langsung ke server-side Apps Script untuk diverifikasi
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -560,9 +592,6 @@
             }
         }
 
-        // ==========================================
-        // FITUR OTP, EDIT, DAN CANCEL
-        // ==========================================
         let pendingAction = null, pendingBookingId = null, pendingEmail = null;
 
         async function requestVerification(action, id, email) {
