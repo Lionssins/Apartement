@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Peminjaman & Booking Apartement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .bg-studio { background-color: #3b82f6; color: white; border: 1px solid #2563eb; }
+        .bg-deluxe { background-color: #8b5cf6; color: white; border: 1px solid #7c3aed; }
+        .bg-penthouse { background-color: #f59e0b; color: white; border: 1px solid #d97706; }
+        .bg-loft { background-color: #10b981; color: white; border: 1px solid #059669; }
+        .bg-skyview { background-color: #f43f5e; color: white; border: 1px solid #e11d48; }
+
+        .day-badges-container::-webkit-scrollbar { display: none; }
+        .day-badges-container { scrollbar-width: none; }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
+        <div class="w-full max-w-screen-2xl mx-auto px-2 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-500 text-slate-950 p-2 rounded-lg font-black tracking-tighter text-xl leading-none shadow">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-wide text-white">PEMINJAMAN APARTEMENT</h1>
+                    <p class="text-[10px] text-slate-400 font-medium tracking-wider uppercase hidden md:block">Portal Reservasi Properti Eksekutif</p>
+                </div>
+            </div>
+            <button onclick="showAdminLogin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition shadow flex items-center gap-2 text-amber-400">
+                <i class="fas fa-user-shield"></i> <span>Admin Login</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="w-full max-w-screen-2xl mx-auto p-4 mt-2">
+        <div class="bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-slate-200/80 w-full">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 border-b border-slate-100 pb-5">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-800 flex items-center gap-2.5">
+                        <i class="far fa-calendar-alt text-amber-500"></i> JADWAL KETERSEDIAAN APARTEMENT
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Klik pada tanggal untuk melihat jadwal detail atau membuat peminjaman baru.</p>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <select id="monthSelect" class="flex-1 md:flex-none border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 outline-none font-bold text-slate-700 text-sm focus:ring-2 focus:ring-amber-500 transition" onchange="renderCalendar()">
+                        <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option>
+                        <option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option>
+                        <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option>
+                        <option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                    </select>
+                    <select id="yearSelect" class="border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 outline-none font-bold text-slate-700 text-sm focus:ring-2 focus:ring-amber-500 transition" onchange="renderCalendar()"></select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-7 gap-1 text-center mb-2 font-bold text-slate-400 text-xs md:text-sm uppercase tracking-wider">
+                <div class="text-rose-500 py-1">Min</div><div class="py-1">Sen</div><div class="py-1">Sel</div><div class="py-1">Rab</div><div class="py-1">Kam</div><div class="py-1">Jum</div><div class="py-1">Sab</div>
+            </div>
+            
+            <div id="calendar" class="grid grid-cols-7 gap-1 md:gap-2 text-sm bg-slate-100/50 border border-slate-200/80 rounded-xl p-1 md:p-2"></div>
+            
+            <div class="mt-6 flex flex-wrap gap-3 md:gap-6 text-xs md:text-sm justify-center font-bold bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 text-slate-600">
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-studio rounded-md shadow-sm"></div> Studio Minimalis</span>
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-deluxe rounded-md shadow-sm"></div> 2-Bedroom Deluxe</span>
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-penthouse rounded-md shadow-sm"></div> Penthouse Executive</span>
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-loft rounded-md shadow-sm"></div> Loft Industrial</span>
+                <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-skyview rounded-md shadow-sm"></div> Sky View Suite</span>
+            </div>
+
+            <div class="mt-8 p-6 border border-slate-200/80 rounded-2xl bg-gradient-to-br from-white to-slate-50/50 shadow-sm">
+                <h3 class="font-extrabold text-slate-800 mb-4 flex items-center gap-2.5 text-base md:text-lg">
+                    <i class="far fa-clock text-amber-500 text-xl"></i> VISUALISASI JAM KETERSEDIAAN HARIAN
+                </h3>
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. Pilih Tanggal</label>
+                        <input type="date" id="checkDate" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white shadow-sm" onchange="renderAvailabilityClock()">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. Pilih Apartement</label>
+                        <select id="checkRoom" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white shadow-sm" onchange="renderAvailabilityClock()">
+                            <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Org)</option>
+                            <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Org)</option>
+                            <option value="Penthouse Executive">Penthouse Executive (Kapasitas 8 Org)</option>
+                            <option value="Loft Industrial">Loft Industrial (Kapasitas 4 Org)</option>
+                            <option value="Sky View Suite">Sky View Suite (Kapasitas 6 Org)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="relative w-full h-14 md:h-16 bg-emerald-500/10 rounded-xl border border-emerald-500/30 overflow-hidden shadow-inner" id="timeClockContainer"></div>
+                <div class="flex justify-between text-[10px] md:text-xs text-slate-400 mt-2 font-bold px-1 tracking-wider">
+                    <span>08:00</span><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span><span>18:00</span>
+                </div>
+                <div class="flex gap-6 mt-5 text-xs md:text-sm justify-center font-bold text-slate-600">
+                    <span class="flex items-center gap-2"><div class="w-4 h-4 bg-emerald-100 border border-emerald-400 rounded shadow-sm"></div> Kosong (Tersedia)</span>
+                    <span class="flex items-center gap-2"><div class="w-4 h-4 bg-rose-500 border border-rose-600 rounded shadow-sm"></div> Terbooking</span>
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 border border-slate-200/80 rounded-2xl bg-slate-50/70 shadow-sm">
+                <h3 class="font-extrabold text-slate-800 mb-6 flex items-center gap-2.5 text-base md:text-lg">
+                    <i class="fas fa-info-circle text-amber-500 text-xl"></i> SPESIFIKASI & FASILITAS APARTEMENT
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" alt="Studio Minimalis" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-blue-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">STUDIO</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">Studio Minimalis</h4>
+                            <ul class="text-xs text-slate-600 space-y-2 font-medium">
+                                <li class="flex items-center gap-2.5"><i class="fas fa-user-friends text-blue-500 w-4 text-center"></i> Kapasitas: Max 2 Orang</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-wifi text-blue-500 w-4 text-center"></i> Wi-Fi 100 Mbps & Smart TV 43"</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-coffee text-blue-500 w-4 text-center"></i> Kitchenette & Coffee Maker</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80" alt="2-Bedroom Deluxe" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-purple-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">DELUXE</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">2-Bedroom Deluxe</h4>
+                            <ul class="text-xs text-slate-600 space-y-2 font-medium">
+                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-purple-500 w-4 text-center"></i> Kapasitas: Max 4 Orang</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-bed text-purple-500 w-4 text-center"></i> 1 King Bed & 1 Queen Bed</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-couch text-purple-500 w-4 text-center"></i> Ruang Tamu Luas & Balkon Privasi</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80" alt="Penthouse Executive" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-amber-500 text-slate-950 text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">EXECUTIVE</span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-extrabold text-slate-800 text-lg mb-2">Penthouse Executive</h4>
+                            <ul class="text-xs text-slate-600 space-y-2 font-medium">
+                                <li class="flex items-center gap-2.5"><i class="fas fa-users text-amber-500 w-4 text-center"></i> Kapasitas: Max 8 Orang</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-swimmer text-amber-500 w-4 text-center"></i> Private Jacuzzi & City View 360°</li>
+                                <li class="flex items-center gap-2.5"><i class="fas fa-concierge-bell text-amber-500 w-4 text-center"></i> Akses VIP & Layanan Butler</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="viewDayModal" style="display: none; z-index: 9900;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col max-h-[95vh] overflow-hidden border border-slate-200/80">
+            <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center shadow-md">
+                <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400" id="viewDayTitle">
+                    <i class="far fa-calendar-check"></i> Detail & Reservasi
+                </h3>
+                <button onclick="closeModal('viewDayModal')" class="text-slate-400 hover:text-white font-bold text-2xl leading-none transition">&times;</button>
+            </div>
+            <div class="flex flex-col md:flex-row flex-1 overflow-y-auto bg-slate-50/50">
+                <div class="flex-1 p-5 md:p-6 md:border-r border-slate-200">
+                    <h4 class="font-black text-slate-800 border-b border-slate-200 pb-3 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
+                        <i class="fas fa-list-ul text-amber-500"></i> Jadwal Terbooking Hari Ini
+                    </h4>
+                    <div id="viewDayContent" class="space-y-3"></div>
+                </div>
+                <div class="flex-1 p-5 md:p-6 bg-white">
+                    <h4 class="font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
+                        <i class="fas fa-plus-circle text-amber-500"></i> Form Peminjaman Apartement
+                    </h4>
+                    <form id="PeminjamanForm" onsubmit="savePeminjaman(event)" class="space-y-4">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                            <i class="far fa-calendar-alt text-amber-500 text-xl ml-1"></i>
+                            <div class="flex-1">
+                                <label class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Tanggal Reservasi</label>
+                                <input type="date" id="bDate" required readonly class="w-full bg-transparent font-black text-slate-700 text-sm outline-none cursor-not-allowed">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Divisi / Departemen</label>
+                                <input type="text" id="bDivisi" required placeholder="Contoh: Marketing, GA, IT" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap Pemesan</label>
+                                <input type="text" id="bName" required placeholder="Ketik nama Anda..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">No. WhatsApp Aktif</label>
+                                <input type="tel" id="bPhone" required placeholder="08xxxxxxxxxx" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Email Pemesan</label>
+                                <input type="email" id="bEmail" required placeholder="email@perusahaan.com" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
+                            <select id="bRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50/50">
+                                <option value="Studio Minimalis">Studio Minimalis (Kapasitas 2 Orang)</option>
+                                <option value="2-Bedroom Deluxe">2-Bedroom Deluxe (Kapasitas 4 Orang)</option>
+                                <option value="Penthouse Executive">Penthouse Executive (Kapasitas 8 Orang)</option>
+                                <option value="Loft Industrial">Loft Industrial (Kapasitas 4 Orang)</option>
+                                <option value="Sky View Suite">Sky View Suite (Kapasitas 6 Orang)</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-In</label>
+                                <input type="time" id="bStart" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-Out</label>
+                                <input type="time" id="bEnd" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50/50">
+                            </div>
+                        </div>
+                        <button type="submit" id="btnSubmit" class="w-full mt-6 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition tracking-wider text-sm uppercase">
+                            <i class="fas fa-check-circle"></i> Konfirmasi & Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminModal" style="display: none; z-index: 9999;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+                <h3 class="font-black text-base flex items-center gap-2 text-amber-400"><i class="fas fa-lock"></i> Admin Login</h3>
+                <button onclick="closeModal('adminModal')" class="text-slate-400 hover:text-white font-bold text-2xl leading-none">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Username</label>
+                    <input type="text" id="admUser" placeholder="Masukkan username" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="admPass" placeholder="Masukkan password" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                </div>
+                <button onclick="processAdminLogin()" id="btnAdminLogin" class="w-full bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold py-3 rounded-xl shadow-md text-sm uppercase tracking-wider transition">Masuk Portal Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminDashboard" style="display: none; z-index: 9999;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl flex flex-col max-h-[90vh] border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center shadow-md">
+                <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400"><i class="fas fa-cogs"></i> Dashboard Admin GA - Manajemen Properti</h3>
+                <button onclick="closeModal('adminDashboard')" class="text-slate-400 hover:text-white font-bold text-2xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                <span class="text-xs md:text-sm text-slate-600 font-bold">Daftar Seluruh Reservasi Apartement</span>
+                <button onclick="downloadSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs md:text-sm font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
+                    <i class="fas fa-file-csv"></i> Download CSV
+                </button>
+            </div>
+            <div class="p-0 overflow-y-auto flex-1 bg-white">
+                <table class="w-full text-left border-collapse text-xs md:text-sm">
+                    <thead class="bg-slate-100 text-slate-700 sticky top-0 shadow-sm z-10 font-bold uppercase">
+                        <tr>
+                            <th class="p-3.5 border-b border-slate-200">Tanggal</th>
+                            <th class="p-3.5 border-b border-slate-200">Waktu</th>
+                            <th class="p-3.5 border-b border-slate-200">Apartement</th>
+                            <th class="p-3.5 border-b border-slate-200">Pemesan</th>
+                            <th class="p-3.5 border-b border-slate-200">No WhatsApp</th>
+                            <th class="p-3.5 border-b border-slate-200">Email</th>
+                            <th class="p-3.5 border-b border-slate-200 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="otpModal" style="display: none; z-index: 10000;" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-slate-200">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="font-extrabold text-lg text-slate-800 mb-1">Verifikasi Keamanan</h3>
+            <p class="text-xs text-slate-500 mb-5">Kami telah mengirimkan 6-digit OTP ke email <strong id="otpEmailDisplay" class="text-slate-800 font-bold"></strong>.</p>
+            <input type="text" id="otpInput" maxlength="6" placeholder="1 2 3 4 5 6" class="w-full border-2 border-slate-300 rounded-xl p-3 text-center text-2xl tracking-[0.5em] font-black outline-none focus:border-amber-500 mb-5 bg-slate-50">
+            <div class="flex gap-2.5">
+                <button onclick="closeModal('otpModal')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs uppercase">Batal</button>
+                <button onclick="verifyAndProceed()" id="btnVerifyOTP" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-2.5 rounded-xl transition text-xs uppercase">Verifikasi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" style="display: none; z-index: 10000;" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden p-6 border border-slate-200">
+            <h3 class="font-extrabold text-lg text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                <i class="fas fa-edit text-amber-500"></i> Edit Jadwal Peminjaman
+            </h3>
+            <form id="EditPeminjamanForm" onsubmit="submitEdit(event)" class="space-y-4">
+                <input type="hidden" id="eId"><input type="hidden" id="eEmail"><input type="hidden" id="eName">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
+                    <select id="eRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50">
+                        <option value="Studio Minimalis">Studio Minimalis</option>
+                        <option value="2-Bedroom Deluxe">2-Bedroom Deluxe</option>
+                        <option value="Penthouse Executive">Penthouse Executive</option>
+                        <option value="Loft Industrial">Loft Industrial</option>
+                        <option value="Sky View Suite">Sky View Suite</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
+                    <input type="date" id="eDate" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-In</label>
+                        <input type="time" id="eStart" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Jam Check-Out</label>
+                        <input type="time" id="eEnd" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold bg-slate-50">
+                    </div>
+                </div>
+                <div class="flex gap-2.5 mt-6">
+                    <button type="button" onclick="closeModal('editModal')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition text-xs uppercase">Batal</button>
+                    <button type="submit" id="btnSaveEdit" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-xl transition text-xs uppercase">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // TEMPELKAN URL DEPLOYMENT WEB APP GOOGLE APPS SCRIPT ANDA DI SINI:
+        // =====================================================================
+        const SCRIPT_URL = 'PASTE_URL_WEB_APP_ANDA_DI_SINI'; 
+
+        let Peminjamans = [];
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initControls();
+            const todayStr = new Date().toISOString().split('T')[0];
+            if(document.getElementById('checkDate')) document.getElementById('checkDate').value = todayStr;
+            document.getElementById('calendar').innerHTML = "<div class='col-span-7 text-center py-20 text-amber-500 font-extrabold'><i class='fas fa-spinner fa-spin text-3xl mb-3'></i><br>Menghubungkan ke Database Apartement...</div>";
+            loadPeminjamans();
+        });
+
+        function initControls() {
+            const mSelect = document.getElementById('monthSelect');
+            const ySelect = document.getElementById('yearSelect');
+            mSelect.value = currentMonth;
+            ySelect.innerHTML = "";
+            for(let y = currentYear - 1; y <= currentYear + 2; y++) {
+                let opt = document.createElement('option');
+                opt.value = y; opt.innerText = y;
+                if(y === currentYear) opt.selected = true;
+                ySelect.appendChild(opt);
+            }
+        }
+
+        async function loadPeminjamans() {
+            if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_URL_WEB_APP_ANDA_DI_SINI')) {
+                document.getElementById('calendar').innerHTML = `<div class='col-span-7 text-center py-6 text-rose-600 font-bold bg-rose-50 border border-rose-200 rounded-xl p-4'>❌ ANDA LUPA MEMASUKKAN SCRIPT_URL DI KODE HTML.</div>`;
+                return;
+            }
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json(); 
+                Peminjamans = (Array.isArray(data) ? data : data.bookings || []).map(b => {
+                    let fDate = b.date;
+                    if (typeof fDate === 'string' && fDate.includes('T')) fDate = fDate.split('T')[0];
+                    return { ...b, date: fDate, phone: b.phone || '', email: b.email || '-' };
+                });
+                renderCalendar();
+                renderAvailabilityClock(); 
+            } catch (error) {
+                document.getElementById('calendar').innerHTML = `<div class='col-span-7 text-center py-10 text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-6'><p class='font-bold text-lg mb-2'>❌ Gagal membaca database</p><p class='text-sm text-slate-700'>${error.message}</p></div>`;
+            }
+        }
+
+        function getRoomClass(roomName) {
+            if (roomName.includes('Studio')) return 'bg-studio';
+            if (roomName.includes('2-Bedroom') || roomName.includes('Deluxe')) return 'bg-deluxe';
+            if (roomName.includes('Penthouse')) return 'bg-penthouse';
+            if (roomName.includes('Loft')) return 'bg-loft';
+            if (roomName.includes('Sky View')) return 'bg-skyview';
+            return 'bg-slate-700 text-white'; 
+        }
+
+        function renderCalendar() {
+            currentMonth = parseInt(document.getElementById('monthSelect').value);
+            currentYear = parseInt(document.getElementById('yearSelect').value);
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for(let i = 0; i < firstDay; i++) {
+                calendar.innerHTML += `<div class="min-h-[100px] md:min-h-[125px] bg-transparent"></div>`;
+            }
+
+            for(let i = 1; i <= daysInMonth; i++) {
+                let dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                let daysPeminjamans = Peminjamans.filter(b => b.date === dateStr);
+                let hasBooking = daysPeminjamans.length > 0;
+                
+                let bgClass = hasBooking ? "bg-amber-50/40 hover:bg-amber-50 cursor-pointer" : "bg-white hover:bg-slate-50 cursor-pointer";
+                let borderClass = hasBooking ? "border-amber-300" : "border-slate-200/80";
+                let textClass = hasBooking ? "text-amber-600 font-black" : "text-slate-600 font-bold";
+
+                let html = `<div onclick="viewDaySchedule('${dateStr}')" class="min-h-[100px] md:min-h-[125px] flex flex-col rounded-xl border ${borderClass} ${bgClass} transition p-1.5 md:p-2 overflow-hidden relative shadow-sm hover:shadow-md">
+                    <span class="text-xs md:text-sm ${textClass} mb-1.5">${i}</span>
+                    <div class="day-badges-container flex-1 overflow-y-auto space-y-1">`;
+                
+                if (hasBooking) {
+                    let roomCounts = {};
+                    daysPeminjamans.forEach(b => {
+                        let shortRoomName = b.room.split(' ')[0];
+                        if (!roomCounts[b.room]) roomCounts[b.room] = { count: 0, shortName: shortRoomName, cssClass: getRoomClass(b.room) };
+                        roomCounts[b.room].count++;
+                    });
+                    for (let key in roomCounts) {
+                        let r = roomCounts[key];
+                        html += `<div class="${r.cssClass} px-1.5 py-0.5 md:px-2 md:py-1 rounded-md text-[9px] md:text-[11px] font-extrabold shadow-sm w-full flex justify-between items-center"><span class="truncate pr-1">${r.shortName}</span><span class="bg-white/90 text-slate-900 rounded px-1 py-0.5 text-[8px] md:text-[9px] font-black">${r.count}</span></div>`;
+                    }
+                }
+                html += `</div></div>`;
+                calendar.innerHTML += html;
+            }
+        }
+
+        function viewDaySchedule(dateStr) {
+            document.getElementById('bDate').value = dateStr;
+            const modalTitle = document.getElementById('viewDayTitle');
+            const content = document.getElementById('viewDayContent');
+            
+            const parts = dateStr.split('-');
+            const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+            modalTitle.innerHTML = `<i class="far fa-calendar-check text-amber-400"></i> Jadwal: ${dateObj.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+            
+            let daysPeminjamans = Peminjamans.filter(b => b.date === dateStr).sort((a,b) => a.start.localeCompare(b.start));
+            
+            if (daysPeminjamans.length === 0) {
+                content.innerHTML = `<div class="text-center text-slate-400 py-16 flex flex-col items-center bg-white rounded-xl border border-dashed border-slate-300"><i class="far fa-building text-4xl mb-3 text-slate-300"></i><p class="font-bold text-slate-600 text-sm">Belum Ada Reservasi</p></div>`;
+            } else {
+                let html = '';
+                daysPeminjamans.forEach(b => {
+                    let cleanPhone = b.phone.replace(/\D/g, '').startsWith('0') ? '62' + b.phone.replace(/\D/g, '').substring(1) : b.phone.replace(/\D/g, '');
+                    html += `<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm text-sm border-l-4 border-l-amber-500">
+                        <div class="font-extrabold text-base mb-2 text-slate-800">${b.name}</div>
+                        <div class="space-y-2 text-slate-600 text-xs md:text-sm">
+                            <div><i class="fas fa-building text-amber-500 w-5"></i> <strong>${b.room}</strong></div>
+                            <div><i class="far fa-clock text-blue-500 w-5"></i> <span>${b.start} - ${b.end} WIB</span></div>
+                            <div><i class="fas fa-phone-alt text-emerald-500 w-5"></i> <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"><i class="fab fa-whatsapp"></i> ${b.phone}</a></div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2 justify-end">
+                            <button onclick="requestVerification('edit', '${b.id}', '${b.email}')" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-edit"></i> Edit</button>
+                            <button onclick="requestVerification('cancel', '${b.id}', '${b.email}')" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-times"></i> Batalkan</button>
+                        </div>
+                    </div>`;
+                });
+                content.innerHTML = html;
+            }
+            document.getElementById('viewDayModal').style.display = 'flex';
+        }
+
+        async function savePeminjaman(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            const originalHtml = btn.innerHTML;
+
+            const namaInput = document.getElementById('bName').value.trim();
+            const divisiInput = document.getElementById('bDivisi').value.trim();
+            const phone = document.getElementById('bPhone').value.trim();
+            const email = document.getElementById('bEmail').value.trim();
+            const room = document.getElementById('bRoom').value;
+            const date = document.getElementById('bDate').value;
+            const start = document.getElementById('bStart').value;
+            const end = document.getElementById('bEnd').value;
+
+            if (start >= end) { alert("Jam check-out harus lebih akhir dari jam check-in!"); return; }
+            const name = `${namaInput} (${divisiInput})`;
+
+            let clash = Peminjamans.find(b => b.date === date && b.room === room && ((start >= b.start && start < b.end) || (end > b.start && end <= b.end) || (start <= b.start && end >= b.end)));
+            if(clash) { alert(`Gagal! ${room} sudah dipinjam oleh ${clash.name}`); return; }
+
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses Reservasi..."; btn.disabled = true;
+            const newPeminjaman = { id: Date.now().toString(), name, room, date, start, end, phone, email };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: "save", booking: newPeminjaman })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert("Reservasi Berhasil! Email resmi konfirmasi tiket telah dikirim ke: " + email);
+                    Peminjamans.push(newPeminjaman);
+                    renderCalendar();
+                    renderAvailabilityClock();
+                    document.getElementById('PeminjamanForm').reset();
+                    closeModal('viewDayModal'); 
+                } else { alert("Gagal dari server: " + result.message); }
+            } catch (error) { alert("Terjadi kegagalan jaringan saat menyimpan."); }
+            btn.innerHTML = originalHtml; btn.disabled = false;
+        }
+
+        // ==========================================================
+        // PERUBAHAN UTAMA: PROSES LOGIN ADMIN AMAN (SERVER SIDE)
+        // ==========================================================
+        async function processAdminLogin() {
+            const btn = document.getElementById('btnAdminLogin');
+            const user = document.getElementById('admUser').value.trim();
+            const pass = document.getElementById('admPass').value.trim();
+
+            if(!user || !pass) { alert("Isi username & password!"); return; }
+            
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memverifikasi..."; btn.disabled = true;
+
+            try {
+                // Mengirim data mentah langsung ke server-side Apps Script untuk diverifikasi
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: "adminLogin", user: user, pass: pass })
+                });
+                const result = await response.json();
+
+                if(result.status === "success") {
+                    closeModal('adminModal');
+                    document.getElementById('admUser').value = '';
+                    document.getElementById('admPass').value = '';
+                    document.getElementById('adminDashboard').style.display = 'flex';
+                    renderAdminTable();
+                } else {
+                    alert("Kredensial Login Admin Salah!");
+                }
+            } catch (e) {
+                alert("Gagal terhubung dengan server autentikasi.");
+            } finally {
+                btn.innerHTML = "Masuk Portal Admin"; btn.disabled = false;
+            }
+        }
+
+        // ==========================================
+        // FITUR OTP, EDIT, DAN CANCEL
+        // ==========================================
+        let pendingAction = null, pendingBookingId = null, pendingEmail = null;
+
+        async function requestVerification(action, id, email) {
+            if (!email || email === '-') { alert("Data email kosong. Hubungi GA."); return; }
+            pendingAction = action; pendingBookingId = id; pendingEmail = email;
+            alert("Sistem sedang mengirimkan kode OTP keamanan ke email Anda...");
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "requestOTP", email: email })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    document.getElementById('otpEmailDisplay').innerText = email;
+                    document.getElementById('otpModal').style.display = 'flex';
+                } else { alert("Gagal kirim OTP: " + result.message); }
+            } catch (e) { alert("Gangguan jaringan."); }
+        }
+
+        async function verifyAndProceed() {
+            const otp = document.getElementById('otpInput').value;
+            if(!otp || otp.length < 6) { alert("Masukkan 6 digit OTP."); return; }
+            const btn = document.getElementById('btnVerifyOTP');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Verifikasi..."; btn.disabled = true;
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "verifyOTP", email: pendingEmail, otp: otp })
+                });
+                const result = await response.json();
+                if(result.status === 'success') {
+                    closeModal('otpModal');
+                    if (pendingAction === 'cancel') executeCancel();
+                    else if (pendingAction === 'edit') showEditModal();
+                } else { alert("Kode OTP Salah / Kadaluarsa!"); }
+            } catch(e) { alert("Gangguan jaringan."); }
+            btn.innerHTML = "Verifikasi"; btn.disabled = false;
+        }
+
+        async function executeCancel() {
+            if(!confirm("Anda yakin ingin membatalkan reservasi ini?")) return;
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "cancel", id: pendingBookingId, email: pendingEmail })
+                });
+                const result = await response.json();
+                if(result.status === 'success') {
+                    alert("Pembatalan Berhasil dikonfirmasi.");
+                    Peminjamans = Peminjamans.filter(b => b.id != pendingBookingId);
+                    renderCalendar(); renderAvailabilityClock();
+                    closeModal('viewDayModal');
+                }
+            } catch(e) { alert("Gagal membatalkan."); }
+        }
+
+        function showEditModal() {
+            const b = Peminjamans.find(x => x.id == pendingBookingId);
+            if(!b) return;
+            document.getElementById('eId').value = b.id;
+            document.getElementById('eName').value = b.name;
+            document.getElementById('eEmail').value = b.email;
+            document.getElementById('eRoom').value = b.room;
+            document.getElementById('eDate').value = b.date;
+            document.getElementById('eStart').value = b.start;
+            document.getElementById('eEnd').value = b.end;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        async function submitEdit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSaveEdit');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Menyimpan..."; btn.disabled = true;
+
+            const updated = {
+                id: document.getElementById('eId').value,
+                name: document.getElementById('eName').value,
+                email: document.getElementById('eEmail').value,
+                room: document.getElementById('eRoom').value,
+                date: document.getElementById('eDate').value,
+                start: document.getElementById('eStart').value,
+                end: document.getElementById('eEnd').value,
+                phone: Peminjamans.find(x => x.id == document.getElementById('eId').value).phone 
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "edit", booking: updated })
+                });
+                const result = await response.json();
+                if(result.status === 'success') {
+                    alert("Perubahan Berhasil Disimpan & Email baru terkirim!");
+                    const idx = Peminjamans.findIndex(x => x.id == updated.id);
+                    if(idx !== -1) Peminjamans[idx] = updated;
+                    renderCalendar(); renderAvailabilityClock();
+                    closeModal('editModal'); closeModal('viewDayModal');
+                }
+            } catch(error) { alert("Gagal menyimpan."); }
+            btn.innerHTML = "Simpan Perubahan"; btn.disabled = false;
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            if(Peminjamans.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center p-8 text-slate-400 font-semibold">Belum ada data reservasi</td></tr>`;
+                return;
+            }
+            [...Peminjamans].sort((a,b) => b.date.localeCompare(a.date)).forEach(b => {
+                let cleanPhone = b.phone.replace(/\D/g, '').startsWith('0') ? '62' + b.phone.replace(/\D/g, '').substring(1) : b.phone.replace(/\D/g, '');
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-100">
+                    <td class="p-3.5 font-bold">${b.date}</td>
+                    <td class="p-3.5 font-semibold">${b.start} - ${b.end}</td>
+                    <td class="p-3.5"><span class="${getRoomClass(b.room)} px-2.5 py-1 rounded-md text-xs font-extrabold shadow-sm">${b.room}</span></td>
+                    <td class="p-3.5 font-bold">${b.name}</td>
+                    <td class="p-3.5"><a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold"><i class="fab fa-whatsapp"></i> ${b.phone}</a></td>
+                    <td class="p-3.5 text-slate-600">${b.email}</td>
+                    <td class="p-3.5 text-center">
+                        <button onclick="deletePeminjaman(this, '${b.id}')" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white p-2 rounded-lg transition border border-rose-200"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        async function deletePeminjaman(btn, id) {
+            if(!confirm("Hapus jadwal reservasi ini secara permanen?")) return;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`; btn.disabled = true;
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "delete", id: id })
+                });
+                const result = await response.json();
+                if(result.status === 'success') {
+                    Peminjamans = Peminjamans.filter(b => b.id != id);
+                    renderAdminTable(); renderCalendar(); renderAvailabilityClock();
+                }
+            } catch (e) { alert("Gagal menghapus."); }
+        }
+
+        function downloadSpreadsheet() {
+            let csv = "Tanggal,Check-In,Check-Out,Apartement,Pemesan,No WhatsApp,Email\n";
+            Peminjamans.forEach(b => { csv += `${b.date},${b.start},${b.end},${b.room},"${b.name}",${b.phone},${b.email}\n`; });
+            const link = document.createElement("a");
+            link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+            link.download = "Data_Reservasi_Apartement.csv"; link.click();
+        }
+
+        function renderAvailabilityClock() {
+            const date = document.getElementById('checkDate').value;
+            const room = document.getElementById('checkRoom').value;
+            const container = document.getElementById('timeClockContainer');
+            if (!date || !room || !container) return;
+            container.innerHTML = '';
+            const bookings = Peminjamans.filter(b => b.date === date && b.room.includes(room.split(' ')[0]));
+            const startDayMins = 8 * 60, endDayMins = 18 * 60, totalMins = endDayMins - startDayMins;
+
+            bookings.forEach(b => {
+                const [sH, sM] = b.start.split(':').map(Number);
+                const [eH, eM] = b.end.split(':').map(Number);
+                const bStartMins = sH * 60 + sM, bEndMins = eH * 60 + eM;
+                const clampStart = Math.max(startDayMins, bStartMins), clampEnd = Math.min(endDayMins, bEndMins);
+
+                if (clampEnd > clampStart) {
+                    const leftPct = ((clampStart - startDayMins) / totalMins) * 100;
+                    const widthPct = ((clampEnd - clampStart) / totalMins) * 100;
+                    const block = document.createElement('div');
+                    block.className = 'absolute top-0 bottom-0 bg-rose-500 border-x border-rose-600 shadow-md flex flex-col items-center justify-center text-white text-[10px] md:text-xs font-black overflow-hidden leading-tight z-10';
+                    block.style.left = `${leftPct}%`; block.style.width = `${widthPct}%`;
+                    if (widthPct > 8) {
+                        block.innerHTML = `<span>${b.start}-${b.end}</span><span class="text-[9px] font-semibold truncate w-full px-1 text-center">${b.name.split(' (')[0]}</span>`;
+                    }
+                    container.appendChild(block);
+                }
+            });
+        }
+
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+        window.showAdminLogin = function() { document.getElementById('adminModal').style.display = 'flex'; }
+        window.onclick = function(e) { if (e.target.classList.contains('fixed')) e.target.style.display = "none"; }
+    </script>
+</body>
+</html>
