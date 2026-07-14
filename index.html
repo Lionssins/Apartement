@@ -138,18 +138,18 @@
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-600 mb-1">Divisi / Departemen</label>
-                <input type="text" id="bDivisi" required readonly class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
+                <input type="text" id="bDivisi" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-50/50 focus:bg-white transition focus:border-amber-500 text-slate-600">
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold text-slate-600 mb-1">No. WhatsApp Aktif</label>
-                <input type="tel" id="bPhone" required readonly class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
+                <input type="tel" id="bPhone" required placeholder="Contoh: 0812345678" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-50/50 focus:bg-white transition focus:border-amber-500 text-slate-600">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-600 mb-1">Email Pemesan</label>
-                <input type="email" id="bEmail" required readonly class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-100 text-slate-600 cursor-not-allowed">
+                <input type="email" id="bEmail" required placeholder="email@domain.com" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-50/50 focus:bg-white transition focus:border-amber-500 text-slate-600">
               </div>
             </div>
 
@@ -157,7 +157,6 @@
               <label class="block text-xs font-bold text-slate-600 mb-1">Pilih Apartement</label>
               <select id="bRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50/50 focus:bg-white outline-none focus:border-amber-500 transition">
                 <option value="Sudirman Park">Sudirman Park</option>
-                <option value="Belum Tersedia">Belum Tersedia</option>
                 <option value="Belum Tersedia">Belum Tersedia</option>
               </select>
             </div>
@@ -205,20 +204,20 @@
   <div id="adminDashboard" style="display:none; z-index:9999;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl flex flex-col max-h-[90vh] border border-slate-200 overflow-hidden">
       <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center shadow-md">
-        <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400"><i class="fas fa-cogs"></i> Dashboard Admin GA - Manajemen Properti</h3>
+        <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400"><i class="fas fa-cogs"></i> Dashboard Admin </h3>
         <button onclick="closeModal('adminDashboard')" class="text-slate-400 hover:text-white font-bold text-2xl leading-none">&times;</button>
       </div>
       <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-        <span class="text-xs md:text-sm text-slate-600 font-bold">Daftar Seluruh Reservasi Apartement</span>
+        <span class="text-xs md:text-sm text-slate-600 font-bold">Daftar Seluruh Reservasi</span>
         <button onclick="downloadSpreadsheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs md:text-sm font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
           <i class="fas fa-file-csv"></i> Download CSV
         </button>
       </div>
-      <div class="p-0 overflow-y-auto flex-1 bg-white">
-        <table class="w-full text-left border-collapse text-xs md:text-sm">
+      <div class="p-0 overflow-auto flex-1 bg-white w-full">
+        <table class="w-full text-left border-collapse text-xs md:text-sm min-w-[800px]">
           <thead class="bg-slate-100 text-slate-700 sticky top-0 shadow-sm z-10 font-bold uppercase">
             <tr>
-              <th class="p-3.5 border-b border-slate-200">Tanggal Reservasi</th>
+              <th class="p-3.5 border-b border-slate-200">Tanggal Booking</th>
               <th class="p-3.5 border-b border-slate-200">Check-In</th>
               <th class="p-3.5 border-b border-slate-200">Check-Out</th>
               <th class="p-3.5 border-b border-slate-200">Apartement</th>
@@ -265,7 +264,6 @@
           <select id="eRoom" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold bg-slate-50">
             <option value="Sudirman Park">Sudirman Park</option>
             <option value="Belum Tersedia">Belum Tersedia</option>
-            <option value="Belum Tersedia">Belum Tersedia</option>
           </select>
         </div>
 
@@ -289,7 +287,6 @@
   </div>
 
   <script>
-    // GANTI URL INI JIKA ANDA MEMILIKI DEPLOYMENT BARU DI GOOGLE APPS SCRIPT
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyom81_kzRijquUA5gaH_fecy916wGXnKFYjJJiM7Aqah91-pnlitUm-L2WzRaUTP75/exec';
     let Peminjamans = [];
     let MasterKaryawan = [];
@@ -323,23 +320,34 @@
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
-        Peminjamans = data.bookings || [];
+        
+        // Memotong "T00:00:00.000Z" dari string waktu agar formatnya menjadi YYYY-MM-DD
+        // Ini memperbaiki bug tidak bisa diklik dan format visualisasi yang berantakan
+        Peminjamans = (data.bookings || []).map(b => ({
+          ...b,
+          checkIn: b.checkIn ? b.checkIn.split('T')[0] : b.checkIn,
+          checkOut: b.checkOut ? b.checkOut.split('T')[0] : b.checkOut
+        }));
+        
         MasterKaryawan = data.karyawan || [];
         const datalist = document.getElementById('karyawanDataList');
         datalist.innerHTML = MasterKaryawan.map(k => `<option value="${k.nama}">${k.divisi} - ${k.email}</option>`).join('');
+        
         renderCalendar();
         renderAvailabilityClock();
       } catch (error) {
-        console.error("Gagal memuat data dari Apps Script", error);
+        console.error("Gagal memuat data", error);
       }
     }
 
     function autoFillKaryawan() {
       const inputName = document.getElementById('bName').value.trim().toLowerCase();
       const found = MasterKaryawan.find(k => k.nama.toLowerCase() === inputName);
-      document.getElementById('bDivisi').value = found ? found.divisi : '';
-      document.getElementById('bPhone').value = found ? found.phone : '';
-      document.getElementById('bEmail').value = found ? found.email : '';
+      if(found) {
+        document.getElementById('bDivisi').value = found.divisi;
+        document.getElementById('bPhone').value = found.phone;
+        document.getElementById('bEmail').value = found.email;
+      }
     }
 
     function getRoomClass(roomName) {
@@ -407,7 +415,7 @@
         content.innerHTML = `<div class="text-center text-slate-400 py-16 flex flex-col items-center bg-white rounded-xl border border-dashed border-slate-300"><i class="far fa-building text-4xl mb-3 text-slate-300"></i><p class="font-bold text-slate-600 text-sm">Belum Ada Reservasi</p></div>`;
       } else {
         content.innerHTML = dayBookings.map(b => {
-          const cleanPhone = b.phone.replace(/\D/g, '').startsWith('0') ? '62' + b.phone.replace(/\D/g, '').substring(1) : b.phone.replace(/\D/g, '');
+          const cleanPhone = (b.phone || "").replace(/\D/g, '').startsWith('0') ? '62' + (b.phone || "").replace(/\D/g, '').substring(1) : (b.phone || "").replace(/\D/g, '');
           return `<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm text-sm border-l-4 border-l-amber-500">
             <div class="font-extrabold text-base mb-2 text-slate-800">${b.name}</div>
             <div class="space-y-2 text-slate-600 text-xs md:text-sm">
@@ -439,7 +447,6 @@
       const checkIn = document.getElementById('bStart').value;
       const checkOut = document.getElementById('bEnd').value;
 
-      if (!divisi || !email) return alert('Silakan pilih nama dari daftar karyawan agar Divisi dan Email terisi otomatis!');
       if (checkIn > checkOut) return alert('Tanggal check-out harus sama atau lebih akhir dari tanggal check-in!');
 
       const clash = Peminjamans.find(b => b.room === room && overlaps(checkIn, checkOut, b.checkIn, b.checkOut));
@@ -471,9 +478,6 @@
           renderCalendar();
           renderAvailabilityClock();
           document.getElementById('PeminjamanForm').reset();
-          document.getElementById('bDivisi').value = '';
-          document.getElementById('bPhone').value = '';
-          document.getElementById('bEmail').value = '';
           closeModal('viewDayModal');
           alert('Reservasi Berhasil!');
         } else {
@@ -487,7 +491,6 @@
       btn.disabled = false;
     }
 
-    // FUNGSI BARU: Backend Validation Login Admin
     async function processAdminLogin() {
       const user = document.getElementById('admUser').value;
       const pass = document.getElementById('admPass').value;
@@ -521,7 +524,6 @@
       btn.disabled = false;
     }
 
-    // FUNGSI BARU: Backend Hapus Data Dari Admin
     async function deletePeminjaman(btn, id) {
       if (!confirm('Apakah Anda yakin ingin menghapus data reservasi ini?')) return;
       
@@ -566,7 +568,12 @@
       document.getElementById('editModal').style.display = 'flex';
     }
 
-    // FUNGSI BARU: Submit Edit Form
+    // Bypass OTP untuk Admin
+    window.showEditModalAdmin = function(id) {
+      pendingBookingId = id;
+      showEditModal();
+    };
+
     async function submitEdit(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSaveEdit');
@@ -604,6 +611,7 @@
           if (index > -1) Object.assign(Peminjamans[index], booking);
           renderCalendar();
           renderAvailabilityClock();
+          renderAdminTable(); // Segarkan jika sedang dibuka
           closeModal('editModal');
           closeModal('viewDayModal');
           alert('Perubahan berhasil disimpan');
@@ -618,7 +626,6 @@
       btn.disabled = false;
     }
 
-    // FUNGSI BARU: Minta OTP untuk Edit/Cancel
     async function requestVerification(action, id, email) {
       pendingAction = action;
       pendingBookingId = id;
@@ -627,7 +634,6 @@
       document.getElementById('otpInput').value = '';
       document.getElementById('otpModal').style.display = 'flex';
 
-      // Disini opsional memanggil requestOTP backend jika ingin mengirim email beneran
       fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -635,7 +641,6 @@
       });
     }
 
-    // FUNGSI BARU: Verifikasi OTP
     async function verifyAndProceed() {
       const otp = document.getElementById('otpInput').value;
       if (otp.length < 6) return alert('Masukkan 6 digit OTP');
@@ -670,7 +675,6 @@
       btn.disabled = false;
     }
 
-    // FUNGSI BARU: Eksekusi Pembatalan Reservasi
     async function eksekusiBatal(id) {
       try {
         const response = await fetch(SCRIPT_URL, {
@@ -702,17 +706,18 @@
         return;
       }
       [...Peminjamans].sort((a, b) => b.checkIn.localeCompare(a.checkIn)).forEach(b => {
-        const cleanPhone = b.phone.replace(/\D/g, '').startsWith('0') ? '62' + b.phone.replace(/\D/g, '').substring(1) : b.phone.replace(/\D/g, '');
+        const cleanPhone = (b.phone || "").replace(/\D/g, '').startsWith('0') ? '62' + (b.phone || "").replace(/\D/g, '').substring(1) : (b.phone || "").replace(/\D/g, '');
         tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-100">
           <td class="p-3.5 font-bold">${b.createdAt ? b.createdAt.split('T')[0] : '-'}</td>
-          <td class="p-3.5 font-bold">${b.checkIn}</td>
-          <td class="p-3.5 font-semibold">${b.checkOut}</td>
+          <td class="p-3.5 font-bold text-amber-600">${b.checkIn}</td>
+          <td class="p-3.5 font-semibold text-rose-600">${b.checkOut}</td>
           <td class="p-3.5"><span class="${getRoomClass(b.room)} px-2.5 py-1 rounded-md text-xs font-extrabold shadow-sm">${b.room}</span></td>
           <td class="p-3.5 font-bold">${b.name}</td>
           <td class="p-3.5"><a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold"><i class="fab fa-whatsapp"></i> ${b.phone}</a></td>
           <td class="p-3.5 text-slate-600">${b.email}</td>
-          <td class="p-3.5 text-center">
-            <button onclick="deletePeminjaman(this, '${b.id}')" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white p-2 rounded-lg transition border border-rose-200"><i class="fas fa-trash-alt"></i></button>
+          <td class="p-3.5 text-center flex justify-center gap-1.5">
+            <button onclick="showEditModalAdmin('${b.id}')" title="Edit" class="bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white p-2 rounded-lg transition border border-amber-200"><i class="fas fa-edit"></i></button>
+            <button onclick="deletePeminjaman(this, '${b.id}')" title="Hapus" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white p-2 rounded-lg transition border border-rose-200"><i class="fas fa-trash-alt"></i></button>
           </td>
         </tr>`;
       });
@@ -721,7 +726,7 @@
     function downloadSpreadsheet() {
       let csv = "Tanggal Reservasi,Check-In,Check-Out,Apartement,Pemesan,No WhatsApp,Email\n";
       Peminjamans.forEach(b => {
-        csv += `${b.createdAt || ''},${b.checkIn},${b.checkOut},${b.room},"${b.name}",${b.phone},${b.email}\n`;
+        csv += `${b.createdAt ? b.createdAt.split('T')[0] : ''},${b.checkIn},${b.checkOut},${b.room},"${b.name}",${b.phone},${b.email}\n`;
       });
       const link = document.createElement('a');
       link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
