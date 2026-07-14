@@ -289,6 +289,7 @@
   </div>
 
   <script>
+    // GANTI URL INI JIKA ANDA MEMILIKI DEPLOYMENT BARU DI GOOGLE APPS SCRIPT
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyom81_kzRijquUA5gaH_fecy916wGXnKFYjJJiM7Aqah91-pnlitUm-L2WzRaUTP75/exec';
     let Peminjamans = [];
     let MasterKaryawan = [];
@@ -319,14 +320,18 @@
     const overlaps = (aStart, aEnd, bStart, bEnd) => !(aEnd < bStart || aStart > bEnd);
 
     async function loadPeminjamans() {
-      const response = await fetch(SCRIPT_URL);
-      const data = await response.json();
-      Peminjamans = data.bookings || [];
-      MasterKaryawan = data.karyawan || [];
-      const datalist = document.getElementById('karyawanDataList');
-      datalist.innerHTML = MasterKaryawan.map(k => `<option value="${k.nama}">${k.divisi} - ${k.email}</option>`).join('');
-      renderCalendar();
-      renderAvailabilityClock();
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();
+        Peminjamans = data.bookings || [];
+        MasterKaryawan = data.karyawan || [];
+        const datalist = document.getElementById('karyawanDataList');
+        datalist.innerHTML = MasterKaryawan.map(k => `<option value="${k.nama}">${k.divisi} - ${k.email}</option>`).join('');
+        renderCalendar();
+        renderAvailabilityClock();
+      } catch (error) {
+        console.error("Gagal memuat data dari Apps Script", error);
+      }
     }
 
     function autoFillKaryawan() {
@@ -482,10 +487,70 @@
       btn.disabled = false;
     }
 
-    function processAdminLogin() {
-      document.getElementById('adminModal').style.display = 'none';
-      document.getElementById('adminDashboard').style.display = 'flex';
-      renderAdminTable();
+    // FUNGSI BARU: Backend Validation Login Admin
+    async function processAdminLogin() {
+      const user = document.getElementById('admUser').value;
+      const pass = document.getElementById('admPass').value;
+      const btn = document.getElementById('btnAdminLogin');
+      
+      btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memeriksa...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminLogin', user, pass })
+        });
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          document.getElementById('adminModal').style.display = 'none';
+          document.getElementById('adminDashboard').style.display = 'flex';
+          renderAdminTable();
+          document.getElementById('admUser').value = '';
+          document.getElementById('admPass').value = '';
+        } else {
+          alert('Username atau Password Salah!');
+        }
+      } catch (e) {
+        alert('Gagal terhubung ke server saat login.');
+      }
+
+      btn.innerHTML = "Masuk Portal Admin";
+      btn.disabled = false;
+    }
+
+    // FUNGSI BARU: Backend Hapus Data Dari Admin
+    async function deletePeminjaman(btn, id) {
+      if (!confirm('Apakah Anda yakin ingin menghapus data reservasi ini?')) return;
+      
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'delete', id })
+        });
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          Peminjamans = Peminjamans.filter(b => b.id !== id);
+          renderAdminTable();
+          renderCalendar();
+          renderAvailabilityClock();
+        } else {
+          alert(result.message || 'Gagal menghapus data.');
+        }
+      } catch (error) {
+        alert('Terjadi kesalahan jaringan.');
+      }
+
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
     }
 
     function showEditModal() {
@@ -501,6 +566,134 @@
       document.getElementById('editModal').style.display = 'flex';
     }
 
+    // FUNGSI BARU: Submit Edit Form
+    async function submitEdit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSaveEdit');
+      btn.innerHTML = "Menyimpan...";
+      btn.disabled = true;
+
+      const booking = {
+        id: document.getElementById('eId').value,
+        name: document.getElementById('eName').value,
+        email: document.getElementById('eEmail').value,
+        phone: document.getElementById('ePhone').value,
+        room: document.getElementById('eRoom').value,
+        checkIn: document.getElementById('eStart').value,
+        checkOut: document.getElementById('eEnd').value,
+        division: Peminjamans.find(x => x.id === document.getElementById('eId').value)?.division || ''
+      };
+
+      if (booking.checkIn > booking.checkOut) {
+          alert('Check-out harus sama atau setelah Check-in');
+          btn.innerHTML = "Simpan Perubahan";
+          btn.disabled = false;
+          return;
+      }
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'edit', booking })
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          const index = Peminjamans.findIndex(b => b.id === booking.id);
+          if (index > -1) Object.assign(Peminjamans[index], booking);
+          renderCalendar();
+          renderAvailabilityClock();
+          closeModal('editModal');
+          closeModal('viewDayModal');
+          alert('Perubahan berhasil disimpan');
+        } else {
+          alert(result.message);
+        }
+      } catch (err) {
+        alert('Gagal menyimpan perubahan ke server');
+      }
+
+      btn.innerHTML = "Simpan Perubahan";
+      btn.disabled = false;
+    }
+
+    // FUNGSI BARU: Minta OTP untuk Edit/Cancel
+    async function requestVerification(action, id, email) {
+      pendingAction = action;
+      pendingBookingId = id;
+      pendingEmail = email;
+      document.getElementById('otpEmailDisplay').innerText = email;
+      document.getElementById('otpInput').value = '';
+      document.getElementById('otpModal').style.display = 'flex';
+
+      // Disini opsional memanggil requestOTP backend jika ingin mengirim email beneran
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'requestOTP', email })
+      });
+    }
+
+    // FUNGSI BARU: Verifikasi OTP
+    async function verifyAndProceed() {
+      const otp = document.getElementById('otpInput').value;
+      if (otp.length < 6) return alert('Masukkan 6 digit OTP');
+      
+      const btn = document.getElementById('btnVerifyOTP');
+      btn.innerHTML = 'Memverifikasi...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'verifyOTP', otp, email: pendingEmail })
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          closeModal('otpModal');
+          if (pendingAction === 'edit') {
+            showEditModal();
+          } else if (pendingAction === 'cancel') {
+            await eksekusiBatal(pendingBookingId);
+          }
+        } else {
+          alert('OTP Salah atau Tidak Valid');
+        }
+      } catch (e) { 
+        alert('Gagal melakukan verifikasi'); 
+      }
+      
+      btn.innerHTML = 'Verifikasi';
+      btn.disabled = false;
+    }
+
+    // FUNGSI BARU: Eksekusi Pembatalan Reservasi
+    async function eksekusiBatal(id) {
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'cancel', id })
+        });
+        const result = await response.json();
+        
+        if(result.status === 'success') {
+          Peminjamans = Peminjamans.filter(b => b.id !== id);
+          renderCalendar();
+          renderAvailabilityClock();
+          closeModal('viewDayModal');
+          alert('Reservasi berhasil dibatalkan');
+        } else {
+          alert('Gagal membatalkan di server.');
+        }
+      } catch(e) {
+        alert('Terjadi kesalahan jaringan.');
+      }
+    }
+
     function renderAdminTable() {
       const tbody = document.getElementById('adminTableBody');
       tbody.innerHTML = '';
@@ -511,6 +704,7 @@
       [...Peminjamans].sort((a, b) => b.checkIn.localeCompare(a.checkIn)).forEach(b => {
         const cleanPhone = b.phone.replace(/\D/g, '').startsWith('0') ? '62' + b.phone.replace(/\D/g, '').substring(1) : b.phone.replace(/\D/g, '');
         tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-100">
+          <td class="p-3.5 font-bold">${b.createdAt ? b.createdAt.split('T')[0] : '-'}</td>
           <td class="p-3.5 font-bold">${b.checkIn}</td>
           <td class="p-3.5 font-semibold">${b.checkOut}</td>
           <td class="p-3.5"><span class="${getRoomClass(b.room)} px-2.5 py-1 rounded-md text-xs font-extrabold shadow-sm">${b.room}</span></td>
