@@ -21,6 +21,15 @@
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased">
 
+  <!-- LOADING DATABASE OVERLAY -->
+  <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/90 z-[99999] flex flex-col items-center justify-center transition-all duration-300">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-xs w-full text-center mx-4">
+      <i class="fas fa-database text-amber-500 text-5xl animate-bounce mb-4"></i>
+      <h3 class="font-black text-slate-800 text-lg">Memuat Database...</h3>
+      <p class="text-xs text-slate-500 mt-1">Menghubungkan ke server cloud. Mohon tunggu sebentar.</p>
+    </div>
+  </div>
+
   <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
     <div class="w-full max-w-screen-2xl mx-auto px-2 flex justify-between items-center">
       <div class="flex items-center gap-3">
@@ -68,7 +77,6 @@
       <div class="mt-6 flex flex-wrap gap-4 md:gap-8 text-xs md:text-sm justify-center font-bold bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 text-slate-600">
         <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-studio rounded-md shadow-sm"></div> Sudirman Park</span>
         <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-deluxe rounded-md shadow-sm"></div> Belum Tersedia</span>
-        <span class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-penthouse rounded-md shadow-sm"></div> Belum Tersedia</span>
       </div>
 
       <div class="mt-8 p-6 border border-slate-200/80 rounded-2xl bg-gradient-to-br from-white to-slate-50/50 shadow-sm">
@@ -85,7 +93,6 @@
             <select id="checkRoom" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-white shadow-sm" onchange="renderAvailabilityClock()">
               <option value="Sudirman Park">Sudirman Park (3 Kamar)</option>
               <option value="Belum Tersedia">Belum Tersedia</option>
-              <option value="Belum Tersedia">Belum Tersedia</option>
             </select>
           </div>
         </div>
@@ -98,6 +105,7 @@
     </div>
   </div>
 
+  <!-- MODAL DETAIL DAY & BOOKING -->
   <div id="viewDayModal" style="display:none; z-index:9900;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col max-h-[95vh] overflow-hidden border border-slate-200/80">
       <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center shadow-md">
@@ -116,7 +124,6 @@
         <div class="flex-1 p-5 md:p-6 bg-white">
           <h4 class="font-black text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between text-sm uppercase tracking-wider">
             <span class="flex items-center gap-2"><i class="fas fa-plus-circle text-amber-500"></i> Form Peminjaman</span>
-            <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-extrabold lowercase tracking-normal"><i class="fas fa-magic"></i> auto-fill aktif</span>
           </h4>
           <form id="PeminjamanForm" onsubmit="savePeminjaman(event)" class="space-y-4">
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 flex items-center gap-3">
@@ -129,16 +136,13 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1 flex justify-between">
-                  <span>Nama Pemesan</span>
-                  <span class="text-[10px] text-blue-600 font-semibold">Ketik/Pilih</span>
-                </label>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Pemesan</label>
                 <input type="text" id="bName" list="karyawanDataList" required placeholder="Ketik nama Anda..." oninput="autoFillKaryawan()" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 bg-slate-50/50 focus:bg-white transition">
                 <datalist id="karyawanDataList"></datalist>
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-600 mb-1">Divisi / Departemen</label>
-                <input type="text" id="bDivisi" required class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-bold outline-none bg-slate-50/50 focus:bg-white transition focus:border-amber-500 text-slate-600">
+                <input type="text" id="bDivisi" required placeholder="Divisi..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm font-semibold outline-none focus:border-amber-500 bg-slate-50/50 focus:bg-white transition">
               </div>
             </div>
 
@@ -181,6 +185,7 @@
     </div>
   </div>
 
+  <!-- MODAL ADMIN LOGIN -->
   <div id="adminModal" style="display:none; z-index:9999;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200">
       <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
@@ -201,10 +206,11 @@
     </div>
   </div>
 
+  <!-- DASHBOARD ADMIN -->
   <div id="adminDashboard" style="display:none; z-index:9999;" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl flex flex-col max-h-[90vh] border border-slate-200 overflow-hidden">
       <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center shadow-md">
-        <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400"><i class="fas fa-cogs"></i> Dashboard Admin </h3>
+        <h3 class="font-extrabold text-base md:text-lg flex items-center gap-2.5 text-amber-400"><i class="fas fa-cogs"></i> Dashboard Admin</h3>
         <button onclick="closeModal('adminDashboard')" class="text-slate-400 hover:text-white font-bold text-2xl leading-none">&times;</button>
       </div>
       <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -233,6 +239,7 @@
     </div>
   </div>
 
+  <!-- MODAL OTP VERIFICATION -->
   <div id="otpModal" style="display:none; z-index:10000;" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-slate-200">
       <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
@@ -248,6 +255,7 @@
     </div>
   </div>
 
+  <!-- MODAL EDIT DATA -->
   <div id="editModal" style="display:none; z-index:10000;" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden p-6 border border-slate-200">
       <h3 class="font-extrabold text-lg text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
@@ -317,12 +325,12 @@
     const overlaps = (aStart, aEnd, bStart, bEnd) => !(aEnd < bStart || aStart > bEnd);
 
     async function loadPeminjamans() {
+      // Tampilkan overlay loading database
+      document.getElementById('loadingOverlay').style.display = 'flex';
       try {
         const response = await fetch(SCRIPT_URL);
         const data = await response.json();
         
-        // Memotong "T00:00:00.000Z" dari string waktu agar formatnya menjadi YYYY-MM-DD
-        // Ini memperbaiki bug tidak bisa diklik dan format visualisasi yang berantakan
         Peminjamans = (data.bookings || []).map(b => ({
           ...b,
           checkIn: b.checkIn ? b.checkIn.split('T')[0] : b.checkIn,
@@ -337,6 +345,9 @@
         renderAvailabilityClock();
       } catch (error) {
         console.error("Gagal memuat data", error);
+      } finally {
+        // Sembunyikan overlay setelah selesai memuat data
+        document.getElementById('loadingOverlay').style.display = 'none';
       }
     }
 
@@ -352,9 +363,7 @@
 
     function getRoomClass(roomName) {
       if (roomName.includes('Studio')) return 'bg-studio';
-      if (roomName.includes('2-Bedroom') || roomName.includes('Deluxe')) return 'bg-deluxe';
-      if (roomName.includes('Penthouse')) return 'bg-penthouse';
-      return 'bg-slate-700 text-white';
+      return 'bg-studio';
     }
 
     function renderCalendar() {
@@ -409,23 +418,26 @@
       document.getElementById('viewDayTitle').innerHTML = `<i class="far fa-calendar-check text-amber-400"></i> Jadwal: ${dateObj.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
 
       const content = document.getElementById('viewDayContent');
-      const dayBookings = Peminjamans.filter(b => isBetween(dateStr, b.checkIn, b.checkOut)).sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+      const dayBookings = Peminjamans.filter(b => isBetween(dateStr, b.checkIn, b.checkOut)).sort((a, b) => (a.checkIn || "").localeCompare(b.checkIn || ""));
 
       if (!dayBookings.length) {
         content.innerHTML = `<div class="text-center text-slate-400 py-16 flex flex-col items-center bg-white rounded-xl border border-dashed border-slate-300"><i class="far fa-building text-4xl mb-3 text-slate-300"></i><p class="font-bold text-slate-600 text-sm">Belum Ada Reservasi</p></div>`;
       } else {
         content.innerHTML = dayBookings.map(b => {
-          const cleanPhone = (b.phone || "").replace(/\D/g, '').startsWith('0') ? '62' + (b.phone || "").replace(/\D/g, '').substring(1) : (b.phone || "").replace(/\D/g, '');
+          const phoneStr = b.phone ? String(b.phone) : "";
+          const cleanPhone = phoneStr.replace(/\D/g, '').startsWith('0') ? '62' + phoneStr.replace(/\D/g, '').substring(1) : phoneStr.replace(/\D/g, '');
+          const safeEmail = b.email ? String(b.email) : "";
+          
           return `<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm text-sm border-l-4 border-l-amber-500">
-            <div class="font-extrabold text-base mb-2 text-slate-800">${b.name}</div>
+            <div class="font-extrabold text-base mb-2 text-slate-800">${b.name || 'Tanpa Nama'}</div>
             <div class="space-y-2 text-slate-600 text-xs md:text-sm">
-              <div><i class="fas fa-building text-amber-500 w-5"></i> <strong>${b.room}</strong></div>
+              <div><i class="fas fa-building text-amber-500 w-5"></i> <strong>${b.room || '-'}</strong></div>
               <div><i class="far fa-calendar-alt text-blue-500 w-5"></i> <span>${b.checkIn} s/d ${b.checkOut}</span></div>
-              <div><i class="fas fa-phone-alt text-emerald-500 w-5"></i> <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"><i class="fab fa-whatsapp"></i> ${b.phone}</a></div>
+              <div><i class="fas fa-phone-alt text-emerald-500 w-5"></i> <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"><i class="fab fa-whatsapp"></i> ${phoneStr || '-'}</a></div>
             </div>
             <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2 justify-end">
-              <button onclick="requestVerification('edit', '${b.id}', '${b.email}')" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-edit"></i> Edit</button>
-              <button onclick="requestVerification('cancel', '${b.id}', '${b.email}')" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-times"></i> Batalkan</button>
+              <button onclick="requestVerification('edit', '${b.id}', '${safeEmail}')" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-edit"></i> Edit</button>
+              <button onclick="requestVerification('cancel', '${b.id}', '${safeEmail}')" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg font-bold"><i class="fas fa-times"></i> Batalkan</button>
             </div>
           </div>`;
         }).join('');
@@ -517,7 +529,7 @@
           alert('Username atau Password Salah!');
         }
       } catch (e) {
-        alert('Gagal terhubung ke server saat login.');
+        alert('Gagal terhubung ke server saat login. Periksa deployment URL Anda.');
       }
 
       btn.innerHTML = "Masuk Portal Admin";
@@ -568,7 +580,6 @@
       document.getElementById('editModal').style.display = 'flex';
     }
 
-    // Bypass OTP untuk Admin
     window.showEditModalAdmin = function(id) {
       pendingBookingId = id;
       showEditModal();
@@ -611,7 +622,7 @@
           if (index > -1) Object.assign(Peminjamans[index], booking);
           renderCalendar();
           renderAvailabilityClock();
-          renderAdminTable(); // Segarkan jika sedang dibuka
+          renderAdminTable();
           closeModal('editModal');
           closeModal('viewDayModal');
           alert('Perubahan berhasil disimpan');
@@ -630,7 +641,7 @@
       pendingAction = action;
       pendingBookingId = id;
       pendingEmail = email;
-      document.getElementById('otpEmailDisplay').innerText = email;
+      document.getElementById('otpEmailDisplay').innerText = email || 'email';
       document.getElementById('otpInput').value = '';
       document.getElementById('otpModal').style.display = 'flex';
 
@@ -705,16 +716,19 @@
         tbody.innerHTML = `<tr><td colspan="8" class="text-center p-8 text-slate-400 font-semibold">Belum ada data reservasi</td></tr>`;
         return;
       }
-      [...Peminjamans].sort((a, b) => b.checkIn.localeCompare(a.checkIn)).forEach(b => {
-        const cleanPhone = (b.phone || "").replace(/\D/g, '').startsWith('0') ? '62' + (b.phone || "").replace(/\D/g, '').substring(1) : (b.phone || "").replace(/\D/g, '');
+      [...Peminjamans].sort((a, b) => (b.checkIn || "").localeCompare(a.checkIn || "")).forEach(b => {
+        const phoneStr = b.phone ? String(b.phone) : "";
+        const cleanPhone = phoneStr.replace(/\D/g, '').startsWith('0') ? '62' + phoneStr.replace(/\D/g, '').substring(1) : phoneStr.replace(/\D/g, '');
+        const dateCreated = b.createdAt ? b.createdAt.split('T')[0] : '-';
+        
         tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-100">
-          <td class="p-3.5 font-bold">${b.createdAt ? b.createdAt.split('T')[0] : '-'}</td>
-          <td class="p-3.5 font-bold text-amber-600">${b.checkIn}</td>
-          <td class="p-3.5 font-semibold text-rose-600">${b.checkOut}</td>
-          <td class="p-3.5"><span class="${getRoomClass(b.room)} px-2.5 py-1 rounded-md text-xs font-extrabold shadow-sm">${b.room}</span></td>
-          <td class="p-3.5 font-bold">${b.name}</td>
-          <td class="p-3.5"><a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold"><i class="fab fa-whatsapp"></i> ${b.phone}</a></td>
-          <td class="p-3.5 text-slate-600">${b.email}</td>
+          <td class="p-3.5 font-bold">${dateCreated}</td>
+          <td class="p-3.5 font-bold text-amber-600">${b.checkIn || '-'}</td>
+          <td class="p-3.5 font-semibold text-rose-600">${b.checkOut || '-'}</td>
+          <td class="p-3.5"><span class="${getRoomClass(b.room || '')} px-2.5 py-1 rounded-md text-xs font-extrabold shadow-sm">${b.room || '-'}</span></td>
+          <td class="p-3.5 font-bold">${b.name || '-'}</td>
+          <td class="p-3.5"><a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-600 font-bold"><i class="fab fa-whatsapp"></i> ${phoneStr || '-'}</a></td>
+          <td class="p-3.5 text-slate-600">${b.email || '-'}</td>
           <td class="p-3.5 text-center flex justify-center gap-1.5">
             <button onclick="showEditModalAdmin('${b.id}')" title="Edit" class="bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white p-2 rounded-lg transition border border-amber-200"><i class="fas fa-edit"></i></button>
             <button onclick="deletePeminjaman(this, '${b.id}')" title="Hapus" class="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white p-2 rounded-lg transition border border-rose-200"><i class="fas fa-trash-alt"></i></button>
@@ -726,7 +740,7 @@
     function downloadSpreadsheet() {
       let csv = "Tanggal Reservasi,Check-In,Check-Out,Apartement,Pemesan,No WhatsApp,Email\n";
       Peminjamans.forEach(b => {
-        csv += `${b.createdAt ? b.createdAt.split('T')[0] : ''},${b.checkIn},${b.checkOut},${b.room},"${b.name}",${b.phone},${b.email}\n`;
+        csv += `${b.createdAt ? b.createdAt.split('T')[0] : ''},${b.checkIn || ''},${b.checkOut || ''},${b.room || ''},"${b.name || ''}",${b.phone || ''},${b.email || ''}\n`;
       });
       const link = document.createElement('a');
       link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -741,7 +755,7 @@
       if (!date || !room) return;
       const active = Peminjamans.filter(b => b.room === room && isBetween(date, b.checkIn, b.checkOut));
       container.innerHTML = active.length
-        ? active.map(b => `<div class="absolute inset-0 bg-rose-500/85 flex items-center justify-center text-white font-black text-xs md:text-sm px-4 text-center"><div><div>${b.name}</div><div class="font-semibold">${b.checkIn} s/d ${b.checkOut}</div></div></div>`).join('')
+        ? active.map(b => `<div class="absolute inset-0 bg-rose-500/85 flex items-center justify-center text-white font-black text-xs md:text-sm px-4 text-center"><div><div>${b.name || 'Tanpa Nama'}</div><div class="font-semibold">${b.checkIn} s/d ${b.checkOut}</div></div></div>`).join('')
         : `<div class="absolute inset-0 flex items-center justify-center text-emerald-700 font-bold text-xs md:text-sm">Tidak ada booking pada tanggal ini</div>`;
     }
 
